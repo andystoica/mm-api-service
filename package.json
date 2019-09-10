@@ -1,0 +1,17 @@
+{
+  "name": "mm-message-api-server",
+  "version": "0.0.1",
+  "description": "Muzmatch API server for messaging services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Andy Stoica",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mocha": "^6.2.0",
+    "mongoose": "^5.7.0"
+  }
+}
