@@ -6,7 +6,7 @@ describe('Express Server', () => {
   it('Handles a GET request to /users', async () => {
     const res = await request(app).get('/users');
 
-    assert.equal(res.status, 200);
+    assert.equal(res.status, 405);
   });
 
   it('Handles a GET request to /messages', async () => {

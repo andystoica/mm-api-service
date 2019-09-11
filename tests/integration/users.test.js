@@ -8,6 +8,7 @@ describe('Users API Routes /users', () => {
     await User.deleteMany({});
   });
 
+  //
   it('POST to /users creates a new user', async () => {
     const payload = {
       email: 'user@test.com',
@@ -21,5 +22,32 @@ describe('Users API Routes /users', () => {
 
     assert.equal(response.body.email, 'user@test.com');
     assert.equal(response.body.username, 'Test');
+  });
+
+  //
+  it('GET to /users returns 405 - Method Not Allowed', async () => {
+    const response = await request(app)
+      .get('/users')
+      .send();
+
+    assert.equal(response.status, 405);
+  });
+
+  //
+  it('PUT to /users/id updates the user account', async () => {
+    const response = await request(app)
+      .put('/users/id')
+      .send();
+
+    assert.equal(response.status, 200);
+  });
+
+  //
+  it('DELETE to /users/id removes the user account', async () => {
+    const response = await request(app)
+      .delete('/users/id')
+      .send();
+
+    assert.equal(response.status, 200);
   });
 });
