@@ -1,3 +1,4 @@
+const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
@@ -24,4 +25,15 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('user', UserSchema);
 
+const validateUser = (user) => {
+  const validationSchema = {
+    email: Joi.string().required(),
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    isAdmin: Joi.boolean()
+  };
+  return Joi.validate(user, validationSchema);
+};
+
 module.exports.User = User;
+module.exports.validate = validateUser;

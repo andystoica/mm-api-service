@@ -1,3 +1,4 @@
+const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 const MessageSchema = new mongoose.Schema({
@@ -11,10 +12,20 @@ const MessageSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: true,
     default: Date.now
   }
 });
 
 const Message = mongoose.model('message', MessageSchema);
+
+const validateMessage = (message) => {
+  const validationSchema = {
+    userId: Joi.string().required(),
+    message: Joi.string().required(),
+    date: Joi.date()
+  };
+  return Joi.validate(message, validationSchema);
+};
+
 module.exports.Message = Message;
+module.exports.validate = validateMessage;
