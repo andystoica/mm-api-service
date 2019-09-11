@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  username: {
+  name: {
     type: String,
     required: true,
     trim: true
@@ -28,9 +28,8 @@ const User = mongoose.model('user', UserSchema);
 const validateUser = (user) => {
   const validationSchema = {
     email: Joi.string().required(),
-    username: Joi.string().required(),
-    password: Joi.string().required(),
-    isAdmin: Joi.boolean()
+    name: Joi.string().required(),
+    password: Joi.string().required()
   };
   return Joi.validate(user, validationSchema);
 };

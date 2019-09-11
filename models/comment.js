@@ -20,7 +20,7 @@ const CommentSchema = new mongoose.Schema({
   }
 });
 
-const Comment = mongoose.model('driver', CommentSchema);
+const Comment = mongoose.model('comment', CommentSchema);
 
 const validateComment = (comment) => {
   const validationSchema = {
