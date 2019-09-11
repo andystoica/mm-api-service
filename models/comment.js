@@ -5,7 +5,7 @@ const CommentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  parrentId: {
+  parentId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
@@ -21,4 +21,4 @@ const CommentSchema = new mongoose.Schema({
 });
 
 const Comment = mongoose.model('driver', CommentSchema);
-module.exports = Comment;
+module.exports.Comment = Comment;

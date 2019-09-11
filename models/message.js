@@ -16,5 +16,5 @@ const MessageSchema = new mongoose.Schema({
   }
 });
 
-const Message = mongoose.model('driver', MessageSchema);
-module.exports = Message;
+const Message = mongoose.model('message', MessageSchema);
+module.exports.Message = Message;

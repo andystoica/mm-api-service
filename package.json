@@ -5,6 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "NODE_ENV=test nodemon --exec 'mocha \"tests/**/*.js\" --recursive --reporter spec'"
   },
   "keywords": [],

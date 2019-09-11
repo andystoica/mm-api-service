@@ -1,8 +1,12 @@
-const User = require('../models/user');
+const { User } = require('../models/user');
 
-const create = async (req, res) => {
-  const user = await User.create(req.body);
-  res.send(user);
+const create = async (req, res, next) => {
+  try {
+    const user = await User.create(req.body);
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const healthCheck = (req, res) => {

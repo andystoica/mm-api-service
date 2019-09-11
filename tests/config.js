@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { User } = require('../models/user');
 
 before((done) => {
   mongoose.connect('mongodb://localhost/mmm_test', {
@@ -11,12 +12,4 @@ before((done) => {
   mongoose.connection.on('error', (err) => {
     console.log('MongoDB Error:', err);
   });
-});
-
-beforeEach((done) => {
-  const { users } = mongoose.connection.collections;
-  users
-    .drop()
-    .then(() => done())
-    .catch(() => done());
 });

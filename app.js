@@ -21,4 +21,8 @@ app.use('/users', usersRouter);
 app.use('/messages', messagesRouter);
 app.use('/comments', commentsRouter);
 
+app.use((err, req, res, next) => {
+  res.status(422).send({ error: err.message });
+});
+
 module.exports = app;
