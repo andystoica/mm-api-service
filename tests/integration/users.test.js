@@ -1,15 +1,28 @@
 const assert = require('assert');
+const bcrypt = require('bcrypt');
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../../app');
 const { User } = require('../../models/user');
 
+/**
+ * TEST DATA and METHODS
+ */
 const testUser = {
   email: 'test@user.com',
   name: 'Test User',
   password: '1a2b3c'
 };
 
-describe('Users API Routes /users', () => {
+const insertTestUser = async () => {
+  const user = await User.create({ ...testUser });
+  return { user };
+};
+
+/**
+ * TEST SUITE for /users API endpoint
+ */
+describe('API endpoint /users', () => {
   beforeEach(async () => {
     await User.deleteMany({});
   });
@@ -26,9 +39,7 @@ describe('Users API Routes /users', () => {
 
   //
   it('POST to /users to create an existing user returns status 400', async () => {
-    let response = await request(app)
-      .post('/users')
-      .send({ ...testUser });
+    await insertTestUser();
 
     response = await request(app)
       .post('/users')
@@ -47,25 +58,24 @@ describe('Users API Routes /users', () => {
   });
 
   //
-  it('GET to /users/id returns the user account details', async () => {
-    const responseA = await request(app)
-      .post('/users')
-      .send({ ...testUser });
+  it('GET to /users/{id} returns the user account details', async () => {
+    const { user } = await insertTestUser();
 
-    const responseB = await request(app)
-      .get(`/users/${responseA.body._id}`)
+    const response = await request(app)
+      .get(`/users/${user._id}`)
       .send();
 
-    assert.equal(responseB.status, 200);
-    assert.equal(responseB.body.email, testUser.email);
-    assert.equal(responseB.body.name, testUser.name);
+    assert.equal(response.status, 200);
+    assert.equal(response.body.email, user.email);
+    assert.equal(response.body.name, user.name);
   });
 
   //
-  it('PUT to /users/id updates the user account', async () => {
-    const responseA = await request(app)
-      .post('/users')
-      .send({ ...testUser });
+  it('PUT to /users/{id} updates the user account', async () => {
+    let user = { ...testUser };
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    user = await User.create(user);
 
     const newUser = {
       password: testUser.password,
@@ -74,23 +84,21 @@ describe('Users API Routes /users', () => {
       newPassword: '4d5e6f'
     };
 
-    const responseB = await request(app)
-      .put(`/users/${responseA.body._id}`)
+    const response = await request(app)
+      .put(`/users/${user._id}`)
       .send({ ...newUser });
 
-    assert.equal(responseB.status, 200);
-    assert.equal(responseB.body.email, newUser.email);
-    assert.equal(responseB.body.name, newUser.name);
+    assert.equal(response.status, 200);
+    assert.equal(response.body.email, newUser.email);
+    assert.equal(response.body.name, newUser.name);
   });
 
   //
-  it('DELETE to /users/id removes the user account', async () => {
-    const responseA = await request(app)
-      .post('/users')
-      .send({ ...testUser });
+  it('DELETE to /users/{id} removes the user account', async () => {
+    const { user } = await insertTestUser();
 
     const response = await request(app)
-      .delete(`/users/${responseA.body._id}`)
+      .delete(`/users/${user._id}`)
       .send();
 
     assert.equal(response.status, 200);

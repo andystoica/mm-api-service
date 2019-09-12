@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
     res.status(500).json({ error: err.stack });
   } else {
     res.status(500).json({ error: 'Internal server' });
