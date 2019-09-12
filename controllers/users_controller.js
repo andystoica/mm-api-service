@@ -45,7 +45,7 @@ module.exports = {
       if (!user) return res.status(404).json({ error: 'User not found' });
 
       // Return user data
-      res.status(200).json(_.pick(user, ['_id', 'name', 'email']));
+      res.status(200).json(_.pick(user, ['_id', 'name']));
     } catch (err) {
       // Handle errors
       next(err);
@@ -54,7 +54,7 @@ module.exports = {
 
   /**
    * GET ALL USERS DETAILS
-   * [x] Permanently deny root with 405
+   * - permanently deny root with 405
    */
   readUsers: (req, res, next) => {
     res.status(405).json({ error: 'Method Not Allowed' });

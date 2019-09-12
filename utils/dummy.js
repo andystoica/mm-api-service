@@ -56,7 +56,7 @@ const testComments = [
 ];
 
 const insertDummy = async () => {
-  try {}
+  try {
     await User.collection.drop();
     await Message.collection.drop();
     await Comment.collection.drop();
