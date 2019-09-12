@@ -45,7 +45,7 @@ module.exports = {
       if (!user) return res.status(404).json({ error: 'User not found' });
 
       // Return user data
-      res.status(200).json(_.pick(user, ['_id', 'name']));
+      res.status(200).json(_.pick(user, ['_id', 'name', 'email']));
     } catch (err) {
       // Handle errors
       next(err);
