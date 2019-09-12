@@ -26,4 +26,4 @@ const validateMessage = (message) => {
 };
 
 module.exports.Message = Message;
-module.exports.validate = validateMessage;
+module.exports.validateMessage = validateMessage;

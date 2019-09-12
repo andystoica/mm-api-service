@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Message, validate } = require('../models/message');
+const { Message, validateMessage } = require('../models/message');
 
 module.exports = {
   /**
@@ -10,7 +10,7 @@ module.exports = {
    */
   createMessage: async (req, res, next) => {
     // Validate input
-    const { error } = validate(req.body);
+    const { error } = validateMessage(req.body);
     if (error) return res.status(400).json({ error: `${error.details[0].message}` });
 
     try {
@@ -79,7 +79,7 @@ module.exports = {
   updateMessage: async (req, res, next) => {
     try {
       // Validate user input
-      const { error } = validate(req.body);
+      const { error } = validateMessage(req.body);
       if (error) return res.status(400).json({ error: `${error.details[0].message}` });
 
       // Find the message

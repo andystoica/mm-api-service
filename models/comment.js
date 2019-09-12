@@ -31,4 +31,4 @@ const validateComment = (comment) => {
 };
 
 module.exports.Comment = Comment;
-module.exports.validate = validateComment;
+module.exports.validateComment = validateComment;

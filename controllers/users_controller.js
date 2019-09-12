@@ -1,33 +1,29 @@
 const _ = require('lodash');
-const bcrypt = require('bcrypt');
-const { User, validate } = require('../models/user');
+const { User, validateUser } = require('../models/user');
 
 module.exports = {
   /**
    * CREATE A USER into the users collection
    * - validate user input and return 400 on failure
    * - check if user dlready exists and return 400 if it does
-   * - hash the password
    * - add a new user and return it with 201 on success
    * - forward exceptions to error handler
    */
   createUser: async (req, res, next) => {
     try {
       // Validate input
-      const { error } = validate(req.body);
+      const { error } = validateUser(req.body);
       if (error) return res.status(400).json({ error: `${error.details[0].message}` });
 
       // Check if user exists
       let user = await User.findOne({ email: req.body.email });
       if (user) return res.status(400).json({ error: 'User already registered' });
 
-      // Hash password
-      user = new User(_.pick(req.body, ['name', 'email', 'password']));
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
-
       // Save to db
+      user = new User(_.pick(req.body, ['name', 'email', 'password']));
       await user.save();
+
+      // Return user data to client
       res.status(201).json(_.pick(user, ['_id', 'name', 'email']));
     } catch (err) {
       // Handle errors
@@ -68,7 +64,6 @@ module.exports = {
    * UPDATE USER DETAILS for a specific user
    * - find the user and return 404 if not found
    * - verify crendential and return 401 on failure
-   * - hash and update new password if provided
    * - update the remaining user details
    * - save to db and return 200 on success
    * - forward exceptions to error handler
@@ -80,18 +75,13 @@ module.exports = {
       if (!user) return res.status(404).json({ error: 'User not found' });
 
       // Authentificate user request
-      const authenticated = await bcrypt.compare(req.body.password, user.password);
+      const authenticated = await user.comparePassword(req.body.password, user.password);
       if (!authenticated) return res.status(401).json({ error: 'Unauthorized' });
-
-      // Update the password if new password is sent over
-      if (req.body.newPassword) {
-        salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(req.body.newPassword, salt);
-      }
 
       // Update user details
       user.email = req.body.email || user.email;
       user.name = req.body.name || user.name;
+      if (user.newPassword) user.password = user.newPassword;
 
       // Save to db
       await user.save();

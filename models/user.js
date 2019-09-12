@@ -1,5 +1,6 @@
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
+const Bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -26,6 +27,19 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+UserSchema.pre('save', function(next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+
+  this.password = Bcrypt.hashSync(this.password, 5);
+  next();
+});
+
+UserSchema.methods.comparePassword = function(password) {
+  return Bcrypt.compareSync(password, this.password);
+};
+
 const User = mongoose.model('user', UserSchema);
 
 const validateUser = (user) => {
@@ -38,4 +52,4 @@ const validateUser = (user) => {
 };
 
 module.exports.User = User;
-module.exports.validate = validateUser;
+module.exports.validateUser = validateUser;

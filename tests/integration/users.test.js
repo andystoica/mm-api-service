@@ -1,7 +1,5 @@
 const assert = require('assert');
-const bcrypt = require('bcrypt');
 const request = require('supertest');
-const mongoose = require('mongoose');
 const app = require('../../app');
 const { User } = require('../../models/user');
 
@@ -72,10 +70,7 @@ describe('API endpoint /users', () => {
 
   //
   it('PUT to /users/{id} updates the user account', async () => {
-    let user = { ...testUser };
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-    user = await User.create(user);
+    const { user } = await insertTestUser();
 
     const newUser = {
       password: testUser.password,

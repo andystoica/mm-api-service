@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Comment, validate } = require('../models/comment');
+const { Comment, validateComment } = require('../models/comment');
 
 module.exports = {
   /**
@@ -11,7 +11,7 @@ module.exports = {
   createComment: async (req, res, next) => {
     try {
       // Validate incomming data
-      const { error } = validate(req.body);
+      const { error } = validateComment(req.body);
       if (error) return res.status(400).json({ error: `${error.details[0].message}` });
 
       // Create a new comment
@@ -79,7 +79,7 @@ module.exports = {
   updateComment: async (req, res, next) => {
     try {
       // Validate input
-      const { error } = validate(res.body);
+      const { error } = validateComment(res.body);
       if (error) return res.status(400).json({ error: `${error.details[0].message}` });
 
       // Find the comment
