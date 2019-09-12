@@ -1,7 +1,7 @@
 {
-  "name": "mm-message-api-server",
+  "name": "mmm-api-server",
   "version": "0.1.0",
-  "description": "MM API server for messaging services.",
+  "description": "MM Messaging API service.",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.7.0"
   },

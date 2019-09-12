@@ -1,0 +1,10 @@
+{
+  "api": {
+    "port": "MMM_PORT",
+    "jwtPrivateKey": "MMM_JWT_PK"
+  },
+  "db": {
+    "uri": "MMM_DB_URI",
+    "name": "MMM_DB_NAME"
+  }
+}

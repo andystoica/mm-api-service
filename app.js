@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const messagesRouter = require('./routes/messages');
 const commentsRouter = require('./routes/comments');
@@ -9,6 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // API Routes
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/messages', messagesRouter);
 app.use('/comments', commentsRouter);

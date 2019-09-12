@@ -1,9 +1,10 @@
 {
   "api": {
-    "port": 3333
+    "port": 3000,
+    "jwtPrivateKey": "replace_with_strong_pk"
   },
   "db": {
-    "uri": "",
-    "name": ""
+    "uri": "mongodb://localhost:27017/",
+    "name": "mmm"
   }
 }

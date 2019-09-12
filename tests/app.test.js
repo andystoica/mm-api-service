@@ -2,22 +2,25 @@ const assert = require('assert');
 const request = require('supertest');
 const app = require('../app');
 
+/**
+ * TEST SUITE for API main endpoint
+ */
 describe('Express Server', () => {
   it('Handles a GET request to /users', async () => {
-    const res = await request(app).get('/users');
+    const response = await request(app).get('/users');
 
-    assert.equal(res.status, 405);
+    assert.equal(response.status, 405);
   });
 
   it('Handles a GET request to /messages', async () => {
-    const res = await request(app).get('/messages');
+    const response = await request(app).get('/messages');
 
-    assert.equal(res.status, 200);
+    assert.equal(response.status, 200);
   });
 
   it('Handles a GET request to /comments', async () => {
-    const res = await request(app).get('/comments');
+    const response = await request(app).get('/comments');
 
-    assert.equal(res.status, 200);
+    assert.equal(response.status, 200);
   });
 });

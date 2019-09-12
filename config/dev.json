@@ -1,6 +1,6 @@
 {
   "api": {
-    "port": 3333
+    "port": 3050
   },
   "db": {
     "uri": "mongodb://localhost:27017/",

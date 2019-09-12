@@ -1,6 +1,8 @@
-const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 const Bcrypt = require('bcrypt');
+const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -38,6 +40,11 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = function(password) {
   return Bcrypt.compareSync(password, this.password);
+};
+
+UserSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('api.jwtPrivateKey'));
+  return token;
 };
 
 const User = mongoose.model('user', UserSchema);
