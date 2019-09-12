@@ -1,7 +1,7 @@
 const assert = require('assert');
 const request = require('supertest');
-const app = require('../../app');
-const { User } = require('../../models/user');
+const app = require('../app');
+const { User } = require('../models/user');
 
 /**
  * TEST DATA and METHODS
