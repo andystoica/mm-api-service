@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=dev nodemon index.js",
+    "dummy": "NODE_ENV=dev node ./utils/dummy.js",
     "test": "NODE_ENV=test nodemon --exec 'mocha \"tests/**/*.js\" --recursive'"
   },
   "keywords": [],
