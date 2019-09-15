@@ -13,15 +13,15 @@ const testUsers = [
   { email: 'test@userb.com', name: 'Test User B', password: '4d5e6f' }
 ];
 const testMessages = [
-  { message: 'M1 Whatever you do, do it well. Walt Disney' },
-  { message: 'M2 Everything you can imagine is real. Pablo Picasso' },
-  { message: 'M3 He who has a why to live can bear almost any how. Friedrich Nietzsche' }
+  { message: '1. Whatever you do, do it well. - Walt Disney' },
+  { message: '2. Everything you can imagine is real. - Pablo Picasso' },
+  { message: '3. He who has a why to live can bear almost any how. - Friedrich Nietzsche' }
 ];
 const testComments = [
-  { comment: 'C1 Lorem ipsum is dummy text used in laying out print, graphic or web designs.' },
-  { comment: 'C2 The passage is attributed to an unknown typesetter in the 15th century.' },
-  { comment: 'C3 The purpose of lorem ipsum is to create a natural looking block of text.' },
-  { comment: 'C4 Letraset used it on their dry-transfer sheets during the 90s.' }
+  { comment: '1. Lorem ipsum is dummy text used in laying out print, graphic or web designs.' },
+  { comment: '2. The passage is attributed to an unknown typesetter in the 15th century.' },
+  { comment: '3. The purpose of lorem ipsum is to create a natural looking block of text.' },
+  { comment: '4. Letraset used it on their dry-transfer sheets during the 90s.' }
 ];
 
 const insertTestComment = async () => {
@@ -97,6 +97,12 @@ describe('API endpoint /comments', () => {
   });
 
   //
+  it('GET to /comments/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).get(`/comments/123`);
+    assert.equal(response.status, 404);
+  });
+
+  //
   it('PUT to /comments/{id} updates a specific comment', async () => {
     const { comment } = await insertTestComment();
     const response = await request(app)
@@ -112,11 +118,23 @@ describe('API endpoint /comments', () => {
   });
 
   //
+  it('PUT to /comments/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).put(`/comments/123`);
+    assert.equal(response.status, 404);
+  });
+
+  //
   it('DELETE to /comments/{id} removes a specific comment', async () => {
     const { comment } = await insertTestComment();
     const response = await request(app).delete(`/comments/${comment._id}`);
 
     assert.equal(response.status, 200);
     assert.equal(response.body.comment, comment.comment);
+  });
+
+  //
+  it('DELETE to /comments/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).delete(`/comments/123`);
+    assert.equal(response.status, 404);
   });
 });

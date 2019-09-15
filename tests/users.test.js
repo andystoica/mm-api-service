@@ -69,6 +69,12 @@ describe('API endpoint /users', () => {
   });
 
   //
+  it('GET to /users/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).get(`/users/123`);
+    assert.equal(response.status, 404);
+  });
+
+  //
   it('PUT to /users/{id} updates the user account', async () => {
     const { user } = await insertTestUser();
 
@@ -89,6 +95,11 @@ describe('API endpoint /users', () => {
   });
 
   //
+  it('PUT to /users/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).put(`/users/123`);
+    assert.equal(response.status, 404);
+  });
+  //
   it('DELETE to /users/{id} removes the user account', async () => {
     const { user } = await insertTestUser();
 
@@ -99,5 +110,11 @@ describe('API endpoint /users', () => {
     assert.equal(response.status, 200);
     assert.equal(response.body.email, testUser.email);
     assert.equal(response.body.name, testUser.name);
+  });
+
+  //
+  it('DELETE to /users/{id} with invalid ID returns 404', async () => {
+    const response = await request(app).delete(`/users/123`);
+    assert.equal(response.status, 404);
   });
 });

@@ -9,16 +9,16 @@ const { Message } = require('../models/message');
  */
 const testUser = { email: 'test@usera.com', name: 'Test User A', password: '1a2b3c' };
 const testMessages = [
-  { message: '1. Whatever you do, do it well. Walt Disney' },
-  { message: '2. Everything you can imagine is real. Pablo Picasso' },
-  { message: '3. He who has a why to live can bear almost any how. Friedrich Nietzsche' },
-  { message: '4. What we think, we become. Buddha' },
-  { message: '5. All limitations are self-imposed. Oliver Wendell Holmes' },
-  { message: '6. Problems are not stop signs, they are guidelines. Robert H. Schiuller' },
-  { message: '7. If you tell the truth you don’t have to remember anything. Mark Twain' },
-  { message: '8. I could agree with you but then we’d both be wrong. Harvey Specter' },
-  { message: '9. Be so good they can’t ignore you. Steve Martin' },
-  { message: '10. I don’t need it to be easy, I need it to be worth it. Lil Wayne' }
+  { message: '1. Whatever you do, do it well. - Walt Disney' },
+  { message: '2. Everything you can imagine is real. - Pablo Picasso' },
+  { message: '3. He who has a why to live can bear almost any how. - Friedrich Nietzsche' },
+  { message: '4. What we think, we become. - Buddha' },
+  { message: '5. All limitations are self-imposed. - Oliver Wendell Holmes' },
+  { message: '6. Problems are not stop signs, they are guidelines. - Robert H. Schiuller' },
+  { message: '7. If you tell the truth you don’t have to remember anything. - Mark Twain' },
+  { message: '8. I could agree with you but then we’d both be wrong. - Harvey Specter' },
+  { message: '9. Be so good they can’t ignore you. - Steve Martin' },
+  { message: '10. I don’t need it to be easy, I need it to be worth it. - Lil Wayne' }
 ];
 
 const insertTestMessage = async () => {
@@ -85,6 +85,13 @@ describe('API endpoint /messages', () => {
   });
 
   //
+  it('GET to /messages/{id} with invalid ID returns 404 error', async () => {
+    const response = await request(app).get(`/messages/123`);
+
+    assert.equal(response.status, 404);
+  });
+
+  //
   it('PUT to /messages/{id} updates a specific message', async () => {
     const { user, message } = await insertTestMessage();
     const response = await request(app)
@@ -96,6 +103,13 @@ describe('API endpoint /messages', () => {
   });
 
   //
+  it('PUT to /messages/{id} with invalid ID returns 404 error', async () => {
+    const response = await request(app).put(`/messages/123`);
+
+    assert.equal(response.status, 404);
+  });
+
+  //
   it('DELETE to /messages/{id} removes a specific message', async () => {
     const { message } = await insertTestMessage();
 
@@ -103,5 +117,12 @@ describe('API endpoint /messages', () => {
 
     assert.equal(response.status, 200);
     assert.equal(response.body.message, message.message);
+  });
+
+  //
+  it('DELETE to /messages/{id} with invalid ID returns 404 error', async () => {
+    const response = await request(app).delete(`/messages/123`);
+
+    assert.equal(response.status, 404);
   });
 });

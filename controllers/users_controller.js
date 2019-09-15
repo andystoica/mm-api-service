@@ -9,7 +9,7 @@ module.exports = {
    * - add a new user and return it with 201 on success
    * - forward exceptions to error handler
    */
-  createUser: async (req, res, next) => {
+  createOneUser: async (req, res, next) => {
     try {
       // Validate input
       const { error } = validateUser(req.body);
@@ -38,7 +38,7 @@ module.exports = {
    * - return 200 on success with user details
    * - forward exceptions to error handler
    */
-  readUser: async (req, res, next) => {
+  readOneUser: async (req, res, next) => {
     try {
       // Find user
       const user = await User.findOne({ _id: req.params.id });
@@ -56,7 +56,7 @@ module.exports = {
    * GET ALL USERS DETAILS
    * - permanently deny root with 405
    */
-  readUsers: (req, res, next) => {
+  readManyUsers: (req, res, next) => {
     res.status(405).json({ error: 'Method Not Allowed' });
   },
 
@@ -68,7 +68,7 @@ module.exports = {
    * - save to db and return 200 on success
    * - forward exceptions to error handler
    */
-  updateUser: async (req, res, next) => {
+  updateOneUser: async (req, res, next) => {
     try {
       // Find user
       const user = await User.findOne({ _id: req.params.id });
@@ -98,7 +98,7 @@ module.exports = {
    * - return 200 and deleted user if successful
    * - forward exceptions to error handler
    */
-  deleteUser: async (req, res, next) => {
+  deleteOneUser: async (req, res, next) => {
     try {
       // Find and delete user
       const user = await User.findOneAndDelete({ _id: req.params.id });

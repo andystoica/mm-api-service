@@ -8,7 +8,7 @@ module.exports = {
    * - add a new messages and return it with 201 on success
    * - forward exceptions to error handler
    */
-  createMessage: async (req, res, next) => {
+  createOneMessage: async (req, res, next) => {
     // Validate input
     const { error } = validateMessage(req.body);
     if (error) return res.status(400).json({ error: `${error.details[0].message}` });
@@ -30,7 +30,7 @@ module.exports = {
    * - return 200 on success with message details
    * - forward exceptions to error handler
    */
-  readMessage: async (req, res, next) => {
+  readOneMessage: async (req, res, next) => {
     try {
       // Find the message
       const message = await Message.findOne({ _id: req.params.id });
@@ -50,7 +50,7 @@ module.exports = {
    * - return first 20 messages by default
    * - forward exceptions to error handler
    */
-  readMessages: async (req, res, next) => {
+  readManyMessages: async (req, res, next) => {
     try {
       // Pagination settings
       const offset = parseInt(req.query.offset) || 0;
@@ -76,7 +76,7 @@ module.exports = {
    * - update the record and return 200
    * - forward exception to error handler
    */
-  updateMessage: async (req, res, next) => {
+  updateOneMessage: async (req, res, next) => {
     try {
       // Validate user input
       const { error } = validateMessage(req.body);
@@ -102,7 +102,7 @@ module.exports = {
    * - return 200 and deleted user if successful
    * - forward exceptions to error handler
    */
-  deleteMessage: async (req, res, next) => {
+  deleteOneMessage: async (req, res, next) => {
     try {
       // Find the message and delete
       const message = await Message.findByIdAndDelete(req.params.id);

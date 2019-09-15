@@ -8,7 +8,7 @@ module.exports = {
    * - add a new comment and return it with 201 on success
    * - forward exceptions to error handler
    */
-  createComment: async (req, res, next) => {
+  createOneComment: async (req, res, next) => {
     try {
       // Validate incomming data
       const { error } = validateComment(req.body);
@@ -29,7 +29,7 @@ module.exports = {
    * - return the comment with 200
    * - forward exceptions to error handler
    */
-  readComment: async (req, res, next) => {
+  readOneComment: async (req, res, next) => {
     try {
       // Find the comment
       const comment = await Comment.findById(req.params.id);
@@ -49,7 +49,7 @@ module.exports = {
    * - return first 20 comments by default
    * - forward exceptions to error handler
    */
-  readComments: async (req, res, next) => {
+  readManyComments: async (req, res, next) => {
     try {
       // Pagination settings
       const offset = parseInt(req.query.offset) || 0;
@@ -70,13 +70,14 @@ module.exports = {
 
   /**
    * UPDATE COMMENT by ID
+   * - requires valid ObjectID
    * - validate user input and return 400 on failure
    * - find the comment or return 404 on failure
    * - update the comment
    * - return the updated comment
    * - forward exceptions to error handler
    */
-  updateComment: async (req, res, next) => {
+  updateOneComment: async (req, res, next) => {
     try {
       // Validate input
       const { error } = validateComment(res.body);
@@ -97,12 +98,13 @@ module.exports = {
 
   /**
    * DELETE COMMENT by ID
+   * - requires valid ObjectID
    * - find the comment or return 404 on failure
    * - delete the comment
    * - return 200 and the deleted comment to the caller
    * - forward exceptions to error handler
    */
-  deleteComment: async (req, res, next) => {
+  deleteOneComment: async (req, res, next) => {
     try {
       // Find the comment
       const comment = await Comment.findByIdAndDelete(req.params.id);
