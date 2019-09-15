@@ -43,4 +43,24 @@ describe('Authentication Middleware', () => {
     assert.equal(response.status, 400);
     assert(response.body.token === undefined);
   });
+
+  //
+  it('Accessing a restricted route without a token returns 401', async () => {
+    const user = await User.create(testUser);
+
+    const response = await request(app).get(`/users/${user._id}`);
+
+    assert.equal(response.status, 401);
+  });
+
+  //
+  it('Accessing a restricted route with an invalid token returns 400', async () => {
+    const user = await User.create(testUser);
+
+    const response = await request(app)
+      .get(`/users/${user._id}`)
+      .set('x-auth-token', 'invalid_token');
+
+    assert.equal(response.status, 400);
+  });
 });
