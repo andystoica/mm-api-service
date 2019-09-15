@@ -15,8 +15,6 @@ const MessageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Message = mongoose.model('message', MessageSchema);
-
 const validateMessage = (message) => {
   const validationSchema = {
     userId: Joi.string().required(),
@@ -25,5 +23,5 @@ const validateMessage = (message) => {
   return Joi.validate(message, validationSchema);
 };
 
-module.exports.Message = Message;
+module.exports.Message = mongoose.model('message', MessageSchema);
 module.exports.validateMessage = validateMessage;

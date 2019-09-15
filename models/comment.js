@@ -19,8 +19,6 @@ const CommentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Comment = mongoose.model('comment', CommentSchema);
-
 const validateComment = (comment) => {
   const validationSchema = {
     userId: Joi.string().required(),
@@ -30,5 +28,5 @@ const validateComment = (comment) => {
   return Joi.validate(comment, validationSchema);
 };
 
-module.exports.Comment = Comment;
+module.exports.Comment = mongoose.model('comment', CommentSchema);
 module.exports.validateComment = validateComment;

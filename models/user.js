@@ -33,7 +33,6 @@ UserSchema.pre('save', function(next) {
   if (!this.isModified('password')) {
     return next();
   }
-
   this.password = Bcrypt.hashSync(this.password, 5);
   next();
 });
@@ -47,8 +46,6 @@ UserSchema.methods.generateAuthToken = function() {
   return token;
 };
 
-const User = mongoose.model('user', UserSchema);
-
 const validateUser = (user) => {
   const validationSchema = {
     email: Joi.string().required(),
@@ -58,5 +55,5 @@ const validateUser = (user) => {
   return Joi.validate(user, validationSchema);
 };
 
-module.exports.User = User;
+module.exports.User = mongoose.model('user', UserSchema);
 module.exports.validateUser = validateUser;
