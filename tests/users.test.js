@@ -59,13 +59,29 @@ describe('API endpoint /users', () => {
   it('GET to /users/{id} returns the user account details', async () => {
     const { user } = await insertTestUser();
 
+    const auth = await request(app)
+      .post('/auth')
+      .send(testUser);
+
     const response = await request(app)
       .get(`/users/${user._id}`)
+      .set('x-auth-token', auth.body.token)
       .send();
 
     assert.equal(response.status, 200);
     assert.equal(response.body.email, user.email);
     assert.equal(response.body.name, user.name);
+  });
+
+  //
+  it('GET to /users/{id} without auth token returns 401', async () => {
+    const { user } = await insertTestUser();
+
+    const response = await request(app)
+      .get(`/users/${user._id}`)
+      .send();
+
+    assert.equal(response.status, 401);
   });
 
   //
@@ -85,8 +101,13 @@ describe('API endpoint /users', () => {
       newPassword: '4d5e6f'
     };
 
+    const auth = await request(app)
+      .post('/auth')
+      .send(testUser);
+
     const response = await request(app)
       .put(`/users/${user._id}`)
+      .set('x-auth-token', auth.body.token)
       .send({ ...newUser });
 
     assert.equal(response.status, 200);
@@ -95,16 +116,33 @@ describe('API endpoint /users', () => {
   });
 
   //
+  it('PUT to /users/{id} without auth token returns 401', async () => {
+    const { user } = await insertTestUser();
+
+    const response = await request(app)
+      .put(`/users/${user._id}`)
+      .send(testUser);
+
+    assert.equal(response.status, 401);
+  });
+
+  //
   it('PUT to /users/{id} with invalid ID returns 404', async () => {
     const response = await request(app).put(`/users/123`);
     assert.equal(response.status, 404);
   });
+
   //
   it('DELETE to /users/{id} removes the user account', async () => {
     const { user } = await insertTestUser();
 
+    const auth = await request(app)
+      .post('/auth')
+      .send(testUser);
+
     const response = await request(app)
       .delete(`/users/${user._id}`)
+      .set('x-auth-token', auth.body.token)
       .send();
 
     assert.equal(response.status, 200);
@@ -116,5 +154,14 @@ describe('API endpoint /users', () => {
   it('DELETE to /users/{id} with invalid ID returns 404', async () => {
     const response = await request(app).delete(`/users/123`);
     assert.equal(response.status, 404);
+  });
+
+  //
+  it('DELETE to /users/{id} without auth token returns 401', async () => {
+    const { user } = await insertTestUser();
+
+    const response = await request(app).delete(`/users/${user._id}`);
+
+    assert.equal(response.status, 401);
   });
 });
